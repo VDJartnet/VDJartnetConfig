@@ -58,7 +58,7 @@ ChannelCommandModel::ChannelCommandModel(QObject *parent):QAbstractTableModel(pa
 
 #if (defined(Q_OS_WIN))
 
-    path += "\\VirtualDJ\\Plugins\\AutoStart\\VDJartnet\\config.txt");
+    path += "\\VirtualDJ\\Plugins\\AutoStart\\VDJartnet\\config.txt";
 
 #elif (defined(Q_OS_MAC))
 
