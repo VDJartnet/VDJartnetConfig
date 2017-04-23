@@ -32,4 +32,5 @@ HEADERS  += mainwindow.h \
     channelcommandmodel.h \
     presetwidget.h
 
-FORMS    +=
+FORMS    += \
+    mainwindow.ui
