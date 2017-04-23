@@ -42,9 +42,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     ipWidget = new QWidget();
     ipWidget->setLayout(ipLayout);
 
+    menuBarMain = new QMenuBar(0);
+
     layout = new QGridLayout;
-    layout->addWidget(ipWidget, 0, 0);
-    layout->addWidget(tableView, 1, 0);
+    layout->addWidget(menuBarMain, 0, 0);
+    layout->addWidget(ipWidget, 1, 0);
+    layout->addWidget(tableView, 2, 0);
 
     central = new QWidget();
     setCentralWidget(central);
@@ -113,8 +116,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 //    aboutAct->setShortcuts(QKeySequence::WhatsThis);
     aboutAct->setStatusTip("View about window");
     connect(aboutAct, &QAction::triggered, this, &MainWindow::about);
-
-    menuBarMain = new QMenuBar(0);
 
     fileMenu = menuBarMain->addMenu("File");
     fileMenu->addAction(saveAct);
