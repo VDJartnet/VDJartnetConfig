@@ -37,21 +37,19 @@ PresetWidget::PresetWidget() {
     presetList->setDragEnabled(true);
     presetList->show();
 
+    path += QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation).toStdString();
+
 #if (defined(Q_OS_WIN))
 
-    char pathDocs[commandLength];
-    SHGetKnownFolderPath(FOLDERID_Documents, KF_FLAG_DEFAULT, nullptr, pathDocs);
-    path += pathDocs
-    path += "\\VirtualDJ\\Plugins\\AutoStart\\VDJartnet\\presets.txt");
+    path += "\\VirtualDJ\\Plugins\\AutoStart\\VDJartnet\\presets.txt";
 
 #elif (defined(Q_OS_MAC))
 
-    path += getenv("HOME");
-    path += "/Documents/VirtualDJ/Plugins64/AutoStart/VDJartnet/presets.txt";
+    path += "/VirtualDJ/Plugins64/AutoStart/VDJartnet/presets.txt";
 
 #endif
 
-    fileRead = new QFile(path);
+    fileRead = new QFile(QString::fromStdString(path));
     if(!fileRead->open(QIODevice::ReadOnly | QIODevice::Text)) {
         QMessageBox::information(0,"error",fileRead->errorString());
     } else {

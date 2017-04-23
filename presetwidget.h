@@ -24,6 +24,7 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QDebug>
+#include <QStandardPaths>
 
 class PresetList : public QListWidget {
 public:
@@ -39,7 +40,7 @@ public:
 private:
     PresetList* presetList;
     QFile* fileRead;
-    QString path;
+    std::string path;
 };
 
 #endif // PRESETWIDGET_H
