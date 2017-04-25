@@ -76,36 +76,38 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     exportAct->setStatusTip("Export settings to disk");
     connect(exportAct, &QAction::triggered, this, &MainWindow::exportFile);
 
-    exitAct = new QAction("Exit2", this);
-    exitAct->setShortcuts(QKeySequence::Close);
-    exitAct->setShortcuts(QKeySequence::Quit);
-    exitAct->setStatusTip("Quit program");
-    connect(exitAct, &QAction::triggered, this, &MainWindow::exit);
+//    exitAct = new QAction("Exit2", this);
+//    exitAct->setShortcuts(QKeySequence::Close);
+//    exitAct->setShortcuts(QKeySequence::Quit);
+//    exitAct->setStatusTip("Quit program");
+//    connect(exitAct, &QAction::triggered, this, &MainWindow::exit);
 
-    undoAct = new QAction("Undo", this);
+    undoAct = channelCommandModel->undoStack->createUndoAction(0, "");
+//    undoAct = new QAction("Undo", this);
     undoAct->setShortcuts(QKeySequence::Undo);
-    undoAct->setStatusTip("Undo last change");
-    connect(undoAct, &QAction::triggered, this, &MainWindow::undo);
+//    undoAct->setStatusTip("Undo last change");
+//    connect(undoAct, &QAction::triggered, this, &MainWindow::undo);
 
-    redoAct = new QAction("Redo", this);
+    redoAct = channelCommandModel->undoStack->createRedoAction(0, "");
+//    redoAct = new QAction("Redo", this);
     redoAct->setShortcuts(QKeySequence::Redo);
-    redoAct->setStatusTip("Redo last change");
-    connect(redoAct, &QAction::triggered, this, &MainWindow::redo);
+//    redoAct->setStatusTip("Redo last change");
+//    connect(redoAct, &QAction::triggered, this, &MainWindow::redo);
 
-    cutAct = new QAction("Cut", this);
-    cutAct->setShortcuts(QKeySequence::Cut);
-    cutAct->setStatusTip("Cut selection to clipboard");
-    connect(cutAct, &QAction::triggered, this, &MainWindow::cut);
+//    cutAct = new QAction("Cut", this);
+//    cutAct->setShortcuts(QKeySequence::Cut);
+//    cutAct->setStatusTip("Cut selection to clipboard");
+//    connect(cutAct, &QAction::triggered, this, &MainWindow::cut);
 
-    copyAct = new QAction("Copy", this);
-    copyAct->setShortcuts(QKeySequence::Copy);
-    copyAct->setStatusTip("Copy selection to clipboard");
-    connect(copyAct, &QAction::triggered, this, &MainWindow::copy);
+//    copyAct = new QAction("Copy", this);
+//    copyAct->setShortcuts(QKeySequence::Copy);
+//    copyAct->setStatusTip("Copy selection to clipboard");
+//    connect(copyAct, &QAction::triggered, this, &MainWindow::copy);
 
-    pasteAct = new QAction("Paste", this);
-    pasteAct->setShortcuts(QKeySequence::Paste);
-    pasteAct->setStatusTip("Paste selection from clipboard");
-    connect(pasteAct, &QAction::triggered, this, &MainWindow::paste);
+//    pasteAct = new QAction("Paste", this);
+//    pasteAct->setShortcuts(QKeySequence::Paste);
+//    pasteAct->setStatusTip("Paste selection from clipboard");
+//    connect(pasteAct, &QAction::triggered, this, &MainWindow::paste);
 
     helpAct = new QAction("Help", this);
     helpAct->setShortcuts(QKeySequence::HelpContents);
@@ -124,16 +126,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     fileMenu->addSeparator();
     fileMenu->addAction(importAct);
     fileMenu->addAction(exportAct);
-    fileMenu->addSeparator();
-    fileMenu->addAction(exitAct);
+//    fileMenu->addSeparator();
+//    fileMenu->addAction(exitAct);
 
     editMenu = menuBarMain->addMenu("Edit");
     editMenu->addAction(undoAct);
     editMenu->addAction(redoAct);
-    editMenu->addSeparator();
-    editMenu->addAction(cutAct);
-    editMenu->addAction(copyAct);
-    editMenu->addAction(pasteAct);
+//    editMenu->addSeparator();
+//    editMenu->addAction(cutAct);
+//    editMenu->addAction(copyAct);
+//    editMenu->addAction(pasteAct);
 
     helpMenu = menuBarMain->addMenu("Help");
     helpMenu->addAction(helpAct);
@@ -143,15 +145,39 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 MainWindow::~MainWindow() {
 }
 
+void MainWindow::closeEvent (QCloseEvent *event) {
+    if (channelCommandModel->undoStack->isClean()) {
+        event->accept();
+    } else {
+        QMessageBox::StandardButton savePrompt = QMessageBox::question( this, "VDJartnetConfig", "Do you want to save before quitting?\n",
+                                                                        QMessageBox::Cancel | QMessageBox::Discard | QMessageBox::Save, QMessageBox::Save);
+        switch (savePrompt) {
+        case QMessageBox::Cancel:
+            event->ignore();
+            return;
+            break;
+        case QMessageBox::Discard:
+            event->accept();
+            break;
+        case QMessageBox::Save:
+            save();
+            event->accept();
+            break;
+        }
+    }
+}
+
 void MainWindow::save() {
     channelCommandModel->ipAddr = ipEdit->text().toStdString();
     channelCommandModel->save();
+    channelCommandModel->undoStack->setClean();
 }
 
 void MainWindow::clear() {
     for(int i = 0; i < dmxChannels; i++) {
         channelCommandModel->channelCommands[i] = (char*)calloc(commandLength, sizeof(char));
     }
+    channelCommandModel->undoStack->clear();
     channelCommandModel->refresh();
 }
 
@@ -167,29 +193,29 @@ void MainWindow::exportFile() {
     channelCommandModel->saveToPath(exportPath);
 }
 
-void MainWindow::exit() {
-    close();
-}
+//void MainWindow::exit() {
+//    close();
+//}
 
-void MainWindow::undo() {
+//void MainWindow::undo() {
 
-}
+//}
 
-void MainWindow::redo() {
+//void MainWindow::redo() {
 
-}
+//}
 
-void MainWindow::cut() {
+//void MainWindow::cut() {
 
-}
+//}
 
-void MainWindow::copy() {
+//void MainWindow::copy() {
 
-}
+//}
 
-void MainWindow::paste() {
+//void MainWindow::paste() {
 
-}
+//}
 
 void MainWindow::help() {
 

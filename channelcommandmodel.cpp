@@ -48,7 +48,7 @@ std::istream& safeGetline(std::istream& is, std::string& t)
     }
 }
 
-ChannelCommandModel::ChannelCommandModel(QObject *parent):QAbstractTableModel(parent) {
+ChannelCommandModel::ChannelCommandModel(QObject *parent) : QAbstractTableModel(parent) {
     for(int i = 0; i < dmxChannels; i++) {
         channelCommands[i] = (char*)calloc(commandLength, sizeof(char));
     }
@@ -175,7 +175,9 @@ bool ChannelCommandModel::setData(const QModelIndex & index, const QVariant & va
     case Qt::EditRole:
         switch (index.column()) {
         case 0:
+            std::string oldValue = channelCommands[index.row()];
             channelCommands[index.row()] = value.toString().toStdString();
+            undoStack->push(new TextUndoCommand(&channelCommands[index.row()], oldValue, this));
             break;
         }
         break;
@@ -232,7 +234,9 @@ bool ChannelCommandModel::dropMimeData(const QMimeData *data, Qt::DropAction act
     }
 
     if (data->hasText()) {
+        std::string oldValue = channelCommands[row];
         channelCommands[row] = data->data("text/plain").data();
+        undoStack->push(new TextUndoCommand(&channelCommands[row], oldValue, this));
         return true;
     } else {
         return false;

@@ -23,6 +23,9 @@
 #include <QTableView>
 #include <QMoveEvent>
 #include <QFileDialog>
+#include <QUndoStack>
+#include <QUndoCommand>
+#include <QCloseEvent>
 #include "channelcommandmodel.h"
 #include "presetwidget.h"
 
@@ -40,6 +43,9 @@ public:
     void moveEvent(QMoveEvent *event);
     PresetWidget* presetWindow;
 
+protected:
+    void closeEvent (QCloseEvent *event);
+
 private:
     QTableView* tableView;
     ChannelCommandModel* channelCommandModel;
@@ -56,12 +62,12 @@ private slots:
     void clear();
     void importFile();
     void exportFile();
-    void exit();
-    void undo();
-    void redo();
-    void cut();
-    void copy();
-    void paste();
+//    void exit();
+//    void undo();
+//    void redo();
+//    void cut();
+//    void copy();
+//    void paste();
     void help();
     void about();
 
@@ -73,12 +79,12 @@ private:
     QAction *clearAct;
     QAction *importAct;
     QAction *exportAct;
-    QAction *exitAct;
+//    QAction *exitAct;
     QAction *undoAct;
     QAction *redoAct;
-    QAction *cutAct;
-    QAction *copyAct;
-    QAction *pasteAct;
+//    QAction *cutAct;
+//    QAction *copyAct;
+//    QAction *pasteAct;
     QAction *helpAct;
     QAction *aboutAct;
 };
