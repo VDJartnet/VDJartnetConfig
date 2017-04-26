@@ -6,6 +6,8 @@
 
 QT       += core gui
 
+QMAKE_CXXFLAGS += -static-libgcc -static-libstdc++
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = VDJartnetConfig
