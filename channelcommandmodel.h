@@ -27,11 +27,13 @@
 #include <QMimeData>
 #include <QDebug>
 #include <QStandardPaths>
+#include <QUndoStack>
+#include "textundocommand.h"
 
 const int commandLength = 512;
 const int dmxChannels = 512;
 
-class ChannelCommandModel : public QAbstractTableModel {
+class ChannelCommandModel : public QAbstractTableModel, public Refreshable {
 public:
     ChannelCommandModel(QObject *parent);
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -48,6 +50,8 @@ public:
     void openFromPath(std::string openPath);
     void saveToPath(std::string savePath);
     void refresh();
+
+    QUndoStack* undoStack = new QUndoStack();
 private:
     //QFile* fileRead;
     QSaveFile* fileWrite;

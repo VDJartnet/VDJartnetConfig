@@ -28,11 +28,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
     channelcommandmodel.cpp \
-    presetwidget.cpp
+    presetwidget.cpp \
+    textundocommand.cpp
 
 HEADERS  += mainwindow.h \
     channelcommandmodel.h \
-    presetwidget.h
+    presetwidget.h \
+    textundocommand.h
 
 FORMS    += \
     mainwindow.ui
