@@ -4,9 +4,16 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT += core
+QT -= gui
 
 QMAKE_CXXFLAGS += -static-libgcc -static-libstdc++
+
+ mystaticconfig {
+        QMAKE_LIBS_QT =
+        QMAKE_LIBS_QT_THREAD =
+        LIBS += $(QTDIR)/lib/libqt.a -lz -framework Carbon
+    }
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
