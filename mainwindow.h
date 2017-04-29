@@ -16,6 +16,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QtCore>
+#include <QtWidgets>
 #include <QMainWindow>
 #include <QGridLayout>
 #include <QLabel>

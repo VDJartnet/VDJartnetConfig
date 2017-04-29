@@ -15,6 +15,9 @@ QMAKE_CXXFLAGS += -static-libgcc -static-libstdc++
         LIBS += $(QTDIR)/lib/libqt.a -lz -framework Carbon
     }
 
+CONFIG+= mystaticconfig
+CONFIG+= static
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = VDJartnetConfig
